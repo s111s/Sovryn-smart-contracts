@@ -20,7 +20,6 @@ borrows some funds, checks the event is correct (including principal and collate
 and that the receiver received the correct amount of tokens
 '''
 def test_borrow(accounts,loanToken,sovryn,set_demand_curve,lend_to_pool, SUSD, RBTC, FeesEvents, SOV):
-  
     # prepare the test
     set_demand_curve()
     lend_to_pool()
@@ -218,9 +217,10 @@ def test_borrow_without_early_access_token_should_fail(accounts,loanToken,sovryn
     lend_to_pool()
     set_demand_curve()
 
-    # sender should have balance 0
-    early_access_token.transfer(accounts[1], early_access_token.balanceOf(accounts[0]))
-
+    # sender should have balance 0, first token-id = 1
+    early_access_token.transferFrom(accounts[0], accounts[1], 1)
+    
+    
     # determine borrowing parameter
     withdrawAmount = 10e18 #i want to borrow 10 USD
     # compute the required collateral. params: address loanToken, address collateralToken, uint256 newPrincipal,uint256 marginAmount, bool isTorqueLoan

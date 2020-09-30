@@ -9,7 +9,7 @@ import "../../openzeppelin/SignedSafeMath.sol";
 import "../../openzeppelin/SafeMathSovryn.sol";
 import "../../openzeppelin/ReentrancyGuard.sol";
 import "../../openzeppelin/Ownable.sol";
-import "../../openzeppelin/Address.sol";
+import "OpenZeppelin/openzeppelin-contracts@2.4.0/contracts/utils/Address.sol";
 import "../../interfaces/IWrbtcERC20.sol";
 import "./Pausable.sol";
 

@@ -38,7 +38,7 @@ contract LoanTokenLogicWrbtc is LoanTokenLogicStandard {
         if (loanAmountPaid != 0) {
             IWrbtcERC20(wrbtcTokenAddress).withdraw(loanAmountPaid);
             Address.sendValue(
-                receiver,
+                address(uint160(receiver)),
                 loanAmountPaid
             );
         }
@@ -77,7 +77,7 @@ contract LoanTokenLogicWrbtc is LoanTokenLogicStandard {
         if (withdrawalAmount != 0) { // withdrawOnOpen == true
             IWrbtcERC20(_wrbtcToken).withdraw(withdrawalAmount);
             Address.sendValue(
-                receiver,
+               address(uint160(receiver)),
                 withdrawalAmount
             );
             if (newPrincipal > withdrawalAmount) {

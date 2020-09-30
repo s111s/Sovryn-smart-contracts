@@ -2,7 +2,7 @@
 pragma solidity >=0.5.0 <0.6.0;
 
 import "./SafeMathSovryn.sol";
-import "./Address.sol";
+import "OpenZeppelin/openzeppelin-contracts@2.4.0/contracts/utils/Address.sol";
 import "../interfaces/IERC20Sovryn.sol";
 
 
