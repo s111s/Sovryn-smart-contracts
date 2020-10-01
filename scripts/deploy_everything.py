@@ -3,7 +3,7 @@
 from brownie import *
 from scripts.deploy_protocol import deployProtocol
 from scripts.deploy_loanToken import deployLoanTokens
-from scripts.deploy_tokens import deployTokens, readTokens
+from scripts.deploy_tokens import deployTokens, readTokens, deployWRBTC
 from scripts.deploy_multisig import deployMultisig
 
 import shared
@@ -25,19 +25,18 @@ def main():
     #owners = [accounts[0], accounts[1], accounts[2]]
     requiredConf=2
     configData = {} # deploy new tokens
-    '''
     configData = {
-        'WRBTC': '0x69FE5cEC81D5eF92600c1A0dB1F11986AB3758Ab',
-        'SUSD': '0xCb46C0DdC60d18eFEB0e586c17AF6Ea36452DaE0',
-        'medianizer': '0x667bd3d048FaEBb85bAa0E9f9D87cF4c8CDFE849'
+        'WRBTC': '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d',
+        'SUSD': '0xE700691Da7B9851F2F35f8b8182C69C53ccad9DB',
+        'medianizer': '0x7b19bb8e6c5188ec483b784d6fb5d807a77b21bf'
     }
-    '''
+    
 
     thisNetwork = network.show_active()
 
     if thisNetwork == "development":
         acct = accounts[0]
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
     else:
         raise Exception("network not supported")
@@ -54,8 +53,12 @@ def main():
         configData['medianizer'] = medianizer.address
         
     sovryn = deployProtocol(acct, tokens, configData['medianizer'])
-    (loanTokenSUSD, loanTokenWRBTC, loanTokenSettingsSUSD,
-     loanTokenSettingsWRBTC) = deployLoanTokens(acct, sovryn, tokens)
+    (loanTokenSUSD, loanTokenWRBTC, loanTokenSettingsSUSD, loanTokenLogicSUSD,
+     loanTokenSettingsWRBTC, loanTokenLogicWRBTC) = deployLoanTokens(acct, sovryn, tokens)
+     
+    
+    setTransactionLimit(acct, loanTokenSUSD, loanTokenSettingsSUSD, loanTokenLogicSUSD, tokens.susd.address, tokens.wrbtc.address)
+    setTransactionLimit(acct, loanTokenWRBTC, loanTokenSettingsWRBTC, loanTokenLogicWRBTC, tokens.susd.address, tokens.wrbtc.address)   
 
     #deployMultisig(sovryn, acct, owners, requiredConf)
     
@@ -75,3 +78,12 @@ def deployMoCMockup(acct):
     priceFeedMockup.setHas(True)
     priceFeedMockup.setValue(11653e18)
     return priceFeedMockup
+    
+    
+def setTransactionLimit(acct, loanToken, loanTokenSettings, loanTokenLogic, SUSD, RBTC):
+    localLoanToken = Contract.from_abi("loanToken", address=loanToken.address, abi=LoanToken.abi, owner=accounts[0])
+    localLoanToken.setTarget(loanTokenSettings.address)
+    localLoanToken = Contract.from_abi("loanToken", address=loanToken.address, abi=LoanTokenSettingsLowerAdmin.abi, owner=accounts[0])
+    localLoanToken.setTransactionLimits([SUSD, RBTC],[21e18, 0.0021e18])
+    localLoanToken = Contract.from_abi("loanToken", address=loanToken.address, abi=LoanToken.abi, owner=accounts[0])
+    localLoanToken.setTarget(loanTokenLogic.address)

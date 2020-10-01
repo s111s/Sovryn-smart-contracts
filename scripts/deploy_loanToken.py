@@ -18,7 +18,7 @@ def main():
 
     if thisNetwork == "development":
         acct = accounts[0]
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
     else:
         raise Exception("network not supported")
@@ -37,9 +37,15 @@ def main():
 Deploys and tests the two loan tokenn contracts
 '''
 def deployLoanTokens(acct, sovryn, tokens):
+    #only while early access - deploy early access token
+    early_access_token = accounts[0].deploy(EarlyAccessToken, "Sovryn Early Access Token", "SEAT")
+    early_access_token.mint(acct)
     
     print('\n DEPLOYING ISUSD')
-    (contractSUSD, loanTokenSettingsSUSD) = deployLoanToken(acct, sovryn, tokens.susd.address, "iSUSD", "iSUSD", tokens.wrbtc.address, tokens.wrbtc.address)
+    (contractSUSD, loanTokenSettingsSUSD, loanTokenLogicSUSD) = deployLoanToken(acct, sovryn, tokens.susd.address, "iSUSD", "iSUSD", tokens.wrbtc.address, tokens.wrbtc.address)
+    #only while early access
+    contractSUSD.setEarlyAccessToken(early_access_token.address)
+    
     print("initializing the lending pool with some tokens, so we do not run out of funds")
     tokens.susd.approve(contractSUSD.address,1000e18) #1k $
     contractSUSD.mint(acct, 1000e18)
@@ -47,14 +53,17 @@ def deployLoanTokens(acct, sovryn, tokens):
         testDeployment(acct, sovryn,contractSUSD.address, tokens.susd, tokens.wrbtc, 21e18, 0)
     
     print('\n DEPLOYING IWRBTC')
-    (contractWRBTC, loanTokenSettingsWRBTC) = deployLoanToken(acct, sovryn, tokens.wrbtc.address, "iWRBTC", "iWRBTC", tokens.susd.address, tokens.wrbtc.address)
+    (contractWRBTC, loanTokenSettingsWRBTC, loanTokenLogicWRBTC) = deployLoanToken(acct, sovryn, tokens.wrbtc.address, "iWRBTC", "iWRBTC", tokens.susd.address, tokens.wrbtc.address)
+    #only while early access
+    contractWRBTC.setEarlyAccessToken(early_access_token.address)
+    
     print("initializing the lending pool with some tokens, so we do not run out of funds")
     contractWRBTC = Contract.from_abi("loanToken", address=contractWRBTC.address, abi=LoanTokenLogicWrbtc.abi, owner=acct)
     contractWRBTC.mintWithBTC(acct, {'value':0.1e18})#0.1 BTC
     if network.show_active() == "development":
-        testDeployment(acct, sovryn, contractWRBTC.address, tokens.wrbtc, tokens.susd, 0.0021e18, 0.0021e18)
+        testDeployment(acct, sovryn, contractWRBTC.address, tokens.wrbtc, tokens.susd, 21e14, 21e14)
 
-    return (contractSUSD, contractWRBTC, loanTokenSettingsSUSD, loanTokenSettingsWRBTC)
+    return (contractSUSD, contractWRBTC, loanTokenSettingsSUSD, loanTokenLogicSUSD, loanTokenSettingsWRBTC, loanTokenLogicWRBTC)
 
 '''
 Deploys a single loan token contract and sets it up
@@ -150,7 +159,7 @@ def deployLoanToken(acct, sovryn, loanTokenAddress, loanTokenSymbol, loanTokenNa
 
     setupLoanTokenRates(acct, loanToken.address, loanTokenSettings.address, loanTokenLogic.address)
 
-    return (loanToken, loanTokenSettings)
+    return (loanToken, loanTokenSettings, loanTokenLogic)
 
 '''
 sets up the interest rates
@@ -180,6 +189,7 @@ def testDeployment(acct, sovryn, loanTokenAddress, underlyingToken, collateralTo
     loanToken = Contract.from_abi("loanToken", address=loanTokenAddress, abi=LoanTokenLogicStandard.abi, owner=acct)
     
     if(value == 0):
+        print("approving token transfer")
         underlyingToken.approve(loanToken.address, loanTokenSent)
     
     

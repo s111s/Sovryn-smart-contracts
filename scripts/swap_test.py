@@ -17,7 +17,7 @@ def main():
 
     if this_network == "development":
         acct = accounts[0]
-    elif this_network == "testnet":
+    elif this_network == "testnet" or this_network == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
     else:
         raise Exception("network not supported")
@@ -99,7 +99,7 @@ def test_loan_address():
 
 
 def test_margin_trading_sending_collateral_tokens():
-    loan_token_sent = 100e18
+    loan_token_sent = 10e18
     leverage_amount = 2e18
 
     #SUSD.mint(loan_token.address,loan_token_sent*6)
@@ -128,7 +128,7 @@ def test_margin_trading_sending_collateral_tokens():
     print("Passed `test_margin_trading_sending_collateral_tokens`")
 
 def test_margin_trading_sending_loan_tokens():
-    loan_token_sent = 100e18
+    loan_token_sent = 10e18
     leverage_amount = 2e18
 
     #SUSD.mint(loan_token.address, loan_token_sent*3)
