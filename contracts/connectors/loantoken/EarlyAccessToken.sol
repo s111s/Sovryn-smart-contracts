@@ -2,8 +2,9 @@ pragma solidity 0.5.17;
 
 
 import "OpenZeppelin/openzeppelin-contracts@2.4.0/contracts/token/ERC721/ERC721.sol";
+import "../../openzeppelin/Ownable.sol";
 
-contract EarlyAccessToken is ERC721 {
+contract EarlyAccessToken is ERC721, Ownable {
 
     uint256 nonce;
     string name;
