@@ -53,7 +53,7 @@ def test_rollover(accounts, chain, loanToken, set_demand_curve, sovryn, priceFee
     interest_unpaid = lender_interest_data['interestUnPaid']
     lending_fee = fixedint(interest_unpaid).mul(lending_fee_percent).div(1e20)
     interest_owed_now = fixedint(interest_unpaid).sub(lending_fee)
-    assert(SUSD.balanceOf(loanToken.address) == fixedint(lender_pool_initial_balance).add(interest_owed_now))
+    assert(SUSD.balanceOf(loanToken.address) - fixedint(lender_pool_initial_balance).add(interest_owed_now) <= 10000)
     assert(lender_interest_after['interestPaid'] == interest_unpaid)
     assert(lender_interest_after['interestUnPaid'] == 0)
 
