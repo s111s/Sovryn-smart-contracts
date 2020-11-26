@@ -1,0 +1,70 @@
+{
+  "42": {
+    "LoanToken": [
+      "0xa9e6bae9F76a229e907D135a4772826B40331F43",
+      "0x9600eb5A8Cde10603fF8449a52D595506258aAEA"
+    ],
+    "LoanTokenLogicStandard": [
+      "0x09dbb3B546E6755C7835582173F0B56B57ea06ae"
+    ],
+    "LoanTokenLogicWrbtc": [
+      "0x962c181052a281E73e01983A09f21e3Eb2dBf0F2"
+    ],
+    "LoanTokenSettingsLowerAdmin": [
+      "0xd05dD99Ba7F9a477EC4569AA9580FB0236f80DBD",
+      "0xa15b7f87d1737ABdeEA1309399c5787d53E0FA1d"
+    ]
+  },
+  "97": {
+    "LoanClosings": [
+      "0xcDF028fc73251f02a3122b1D3DBD53f3E97415D5"
+    ],
+    "LoanMaintenance": [
+      "0x3c737876f260Dd395c42ba9DE3B3a3Db79f0f031"
+    ],
+    "LoanOpenings": [
+      "0x31719d7Fdf347a48B8F736040c690Bc50B8Dc635"
+    ],
+    "LoanSettings": [
+      "0xFd467c4E9F6C4Af8FFD03a84C65b903C4C628a9F"
+    ],
+    "LoanToken": [
+      "0xdc7000cfA4332959499D7701521BD3A07542f46B",
+      "0x6f49C2bbDDF2d4187B20F9c71eDB61E3b205A70d"
+    ],
+    "LoanTokenLogicStandard": [
+      "0x5E7bB341c9B8411F38299cEbFA140861756a86D3"
+    ],
+    "LoanTokenLogicWrbtc": [
+      "0x63d08D3FfE7842CdF102ad03c5D635745daAfd2b"
+    ],
+    "LoanTokenSettingsLowerAdmin": [
+      "0x94EB9213E09A17C66e5ed52a1ce2598cA4F53a18",
+      "0x718a36cb1BF4eEe0a8a9456bb2C335ABD734cA1a"
+    ],
+    "PriceFeeds": [
+      "0xd4aB4e683550A452411F0813BA6f86E460A6b11c"
+    ],
+    "PriceFeedsMoC": [
+      "0xB6A4775Caac7978D6d66a67FcC657750D2869F8F"
+    ],
+    "PriceFeedsMoCMockup": [
+      "0xF86c4a766714d709e1bD6a4A4271a0D1c76CdB1e"
+    ],
+    "ProtocolSettings": [
+      "0xfdc3d37ab826183b9b60B4A499e08f97f32ED1fA"
+    ],
+    "SwapsImplSovrynSwap": [
+      "0xBcDC8e4b975356fE6C2eF5aB5De704b367Ce86f4"
+    ],
+    "TestToken": [
+      "0xBf78964619BD89336A0Eba30Eec02134bcadc262"
+    ],
+    "WRBTC": [
+      "0x9C20658916C8985241A56305fA0E66B1691Cc00b"
+    ],
+    "sovrynProtocol": [
+      "0x9e5E462AadBd37D5472bDF1282DbCC2F7d8765Fe"
+    ]
+  }
+}

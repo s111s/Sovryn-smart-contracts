@@ -23,7 +23,8 @@ def main():
     #readLiquidity()
     #getBalance(contracts['WRBTC'], '0xE5646fEAf7f728C12EcB34D14b4396Ab94174827')
     #getBalance(contracts['WRBTC'], '0x7BE508451Cd748Ba55dcBE75c8067f9420909b49')
-    #readLoan('0x7a1a62ab774c288a231d9bb3ed524d2a5c665c848d8db56b6e97d3dac503b9a3')
+    readLoan('0XBE080B49BFCB7C6165B9A85421CB7C0EE34383E74930E481C4B6EC532435586F')
+    liquidate(contracts['protocol'], '0XBE080B49BFCB7C6165B9A85421CB7C0EE34383E74930E481C4B6EC532435586F')
     #replaceLoanClosings()
     #getExpectedReturn(50e18,  contracts['swapNetwork'], contracts['DoC'], contracts['WRBTC'])
     
@@ -42,9 +43,13 @@ def main():
     #readLoanTokenState(contracts['iRBTC'])
     #print('iDOC')
     #readLoanTokenState(contracts['iDOC'])
+    #getTokenPrice(contracts['iRBTC'])
+    #getTokenPrice(contracts['iDOC'])
     #addLiquidity(contracts['swap'], contracts['WRBTC'], 2e18)
-    
-    mintEarlyAccessTokens(contracts['og'], '0x95f1f9393D1d3e46Df2cDa491fc323E142758c21')
+    #testBorrow(contracts['protocol'], contracts['iDOC'], contracts['DoC'], contracts['WRBTC'])
+    #collateral_token_sent = sovryn.getRequiredCollateral(SUSD.address,RBTC.address,loan_token_sent*2,50e18, False) 
+    #testBorrow(protocolAddress, loanTokenAddress, underlyingTokenAddress, collateralTokenAddress):
+    #mintEarlyAccessTokens(contracts['og'], '0x95f1f9393D1d3e46Df2cDa491fc323E142758c21')
     
 def loadConfig():
     global contracts, acct
@@ -66,7 +71,7 @@ def readLendingFee():
     print(lfp/1e18)
     
 def setupLoanTokenRates(loanTokenAddress, settingsAddress, logicAddress):
-    baseRate = 1e18
+    baseRate = 5e18
     rateMultiplier = 10e18
     targetLevel=0
     kinkLevel=90*10**18
